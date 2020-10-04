@@ -1,0 +1,59 @@
+{
+  "name": "firebase-service-console",
+  "version": "1.0.0",
+  "description": "Firebase Service Terminal Console",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run clean; babel src --out-dir lib",
+    "clean": "rm -rf lib",
+    "lint": "eslint --ext lib/**/*.js",
+    "lint-fix": "eslint --ext lib/**/*.js --fix"
+  },
+  "lint-staged": {
+    "*.{js}": "eslint"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "files": [
+    "lib"
+  ],
+  "author": "Fernando Leal",
+  "license": "MIT",
+  "keywords": [
+    "firebase",
+    "auth",
+    "terminal"
+  ],
+  "bin": {
+    "firebase-console": "./lib/cli.js"
+  },
+  "homepage": "https://github.com/ferleal/firebase-service-console",
+  "bugs": {
+    "url": "https://github.com/ferleal/firebase-service-console/issues",
+    "email": "fernandoleal@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ferleal/firebase-service-console.git"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "clear": "^0.1.0",
+    "dotenv": "^8.2.0",
+    "figlet": "^1.5.0",
+    "firebase-admin": "^9.2.0",
+    "inquirer": "^7.3.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "eslint": "^7.7.0",
+    "eslint-config-google": "^0.14.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11"
+  }
+}
