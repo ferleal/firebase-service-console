@@ -1,6 +1,6 @@
 {
   "name": "firebase-service-console",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Firebase Service Terminal Console",
   "main": "lib/index.js",
   "scripts": {
