@@ -19,8 +19,8 @@ const claim = {
     message: 'What is the user Type:',
     choices: [
         {name: 'End User', value: false},
-        {name: 'Stand User', value: 'stand'},
         {name: 'Admin User', value: 'admin'},
+        {name: 'Define one', value: 'askCustomClaim'},
     ]
 };
 const email = {
@@ -90,6 +90,30 @@ module.exports = {
 
     askClaim: () => {
         const questions = [claim]
+        return inquirer.prompt(questions).then((answer)=>{
+            if(answer.claim === 'askCustomClaim'){
+                 return module.exports.askCustomClaim();
+            }
+            return answer;
+        });
+    },
+
+    askCustomClaim: () => {
+        const questions = [
+            {
+                name: 'claim',
+                type: 'input',
+                message: 'Enter Role:',
+                validate: function (value) {
+                    if (value.length) {
+                        return true;
+                    } else {
+                        return 'Please enter a Role name';
+                    }
+
+                }
+            }
+        ];
         return inquirer.prompt(questions);
     },
 

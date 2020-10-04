@@ -2,4 +2,4 @@
 
 const [,, ... args] = process.argv
 
-const FirebaseConsole = require('./FirebaseConsole');
+const FirebaseServiceConsole = require('./FirebaseServiceConsole');

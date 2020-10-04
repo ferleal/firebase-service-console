@@ -33,7 +33,6 @@ function loopMenu(result,store=false){
     let runNext = '';
     let obj = store;
     return new Promise(async (resolve) => {
-
         if(typeof result.runNext != 'undefined'){
             runNext = result.runNext.next;
             extra = result.runNext.extra;
@@ -50,8 +49,8 @@ function loopMenu(result,store=false){
     });
 }
 
-function getUser(uid){
-    admin.auth().getUser(uid)
+async function getUser(uid){
+    await admin.auth().getUser(uid)
         .then(function(userRecord) {
             // See the UserRecord reference doc for the contents of userRecord.
             console.log('Successfully fetched user data:', userRecord.toJSON());
@@ -62,30 +61,30 @@ function getUser(uid){
 
 }
 
-function setClaim(uid,claim){
-    admin.auth().setCustomUserClaims(uid, claim ).then(function(userRecord) {
+async function setClaim(uid,claim){
+    await admin.auth().setCustomUserClaims(uid, claim ).then(async() => {
         // See the UserRecord reference doc for the contents of userRecord.
         console.log('Successfully updated user claim');
-        getUser(uid);
+        await getUser(uid);
     });
 }
-function updateUser(uid,change, value){
+async function updateUser(uid,change, value){
     if(change === 'claim'){
         const claim = value !== false ? {[value]: true} : {};
-        setClaim(uid,claim);
+        await setClaim(uid,claim);
         return;
     }
 
     const userData = {
         [change]: value,
     }
-    admin.auth().updateUser(uid, userData)
+    await admin.auth().updateUser(uid, userData)
         .then(function(userRecord) {
             // See the UserRecord reference doc for the contents of userRecord.
             console.log('Successfully updated user', userRecord.toJSON());
         })
         .catch(function(error) {
-            console.log('Error updating user:', error);
+            console.error('Error updating user:', error);
         });
 
 }
@@ -109,7 +108,7 @@ function createUser(email,password,displayName,claim = false){
 
 }
 function parseFile(file){
-    const dir =  path.resolve(`${__dirname}../../../../jsons/`);
+    const dir =  path.resolve(`${process.cwd()}/jsons/`);
     console.log(dir);
     const filename = `${dir}/${file}`;
     fs.readFile(filename, (err, data) => {
@@ -119,7 +118,7 @@ function parseFile(file){
         const totalJson = jsonKeys.length;
         if(totalJson > 0){
             jsonKeys.map((key, index)=>{
-                createUser(jsonFile[key].email,'epicor2020',`${jsonFile[key].firstName} ${jsonFile[key].lastName}`)
+                createUser(jsonFile[key].email,'test123',`${jsonFile[key].firstName} ${jsonFile[key].lastName}`)
             });
         }
         // console.log(jsonFile);
@@ -132,17 +131,17 @@ const run = async () => {
     const result = await loopMenu(askPath);
     switch (result.action){
         case 'add':
-            createUser(result.email,'epicor2020','Invitado',claim = false)
+            createUser(result.email,'test123','Guest',claim = false)
             break;
         case 'addFile':
-            console.log(result);
             parseFile(result.file);
             break;
         case 'show':
             getUser(result.uid);
             break;
         case 'update':
-              updateUser(result.uid, result.change,result[result.change]);
+              await updateUser(result.uid, result.change,result[result.change]);
+              run();
             break;
         default:
             console.log('No Available Option')
