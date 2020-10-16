@@ -78,6 +78,7 @@ async function updateUser(uid,change, value){
     const userData = {
         [change]: value,
     }
+
     await admin.auth().updateUser(uid, userData)
         .then(function(userRecord) {
             // See the UserRecord reference doc for the contents of userRecord.

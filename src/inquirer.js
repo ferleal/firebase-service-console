@@ -1,5 +1,9 @@
 const inquirer = require('inquirer');
 
+// TODO: Bug: Fix crash with wrong email address
+// TODO: Bug: Add new users does not return to main
+// TODO: Feat: Update Users should have option to return the update user with the same Id or return to main
+
 const uid = {
     name: 'uid',
     type: 'input',
@@ -52,6 +56,18 @@ const displayName = {
     name: 'displayName',
     type: 'input',
     message: 'Enter your Display Name:',
+    validate: function (value) {
+        if (value.length) {
+            return true;
+        } else {
+            return 'Please enter your Display Name.';
+        }
+    }
+}
+const emailVerified = {
+    name: 'emailVerified',
+    type: 'confirm',
+    message: 'Set email as verified?',
     validate: function (value) {
         if (value.length) {
             return true;
@@ -130,6 +146,10 @@ module.exports = {
         const questions = [displayName]
         return inquirer.prompt(questions);
     },
+    askVerifyEmail: () => {
+        const questions = [emailVerified]
+        return inquirer.prompt(questions);
+    },
 
     askShowUserOpt: () => {
         const questions = [
@@ -148,7 +168,8 @@ module.exports = {
                     {name: 'Claim Roles', value: {extra: { change:'claim' }, next:'askClaim'}},
                     {name: 'Email', value: {extra: { change:'email' }, next:'askEmail'}},
                     {name: 'Password', value: {extra: { change:'password' }, next:'askPassword'}},
-                    {name: 'Display Name', value: {extra: { change:'displayName' }, next:'askDisplayName'}}
+                    {name: 'Display Name', value: {extra: { change:'displayName' }, next:'askDisplayName'}},
+                    {name: 'Verify Email', value: {extra: { change:'emailVerified' }, next:'askVerifyEmail'}}
                 ]
             }
         ];
