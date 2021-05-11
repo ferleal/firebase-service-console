@@ -76,6 +76,7 @@ const emailVerified = {
         }
     }
 }
+
 module.exports = {
     askPath: () => {
         const questions = [
@@ -84,11 +85,13 @@ module.exports = {
                 type: 'list',
                 message: 'What can I do for you:',
                 choices: [
-                    {name: 'Show Users', value: { extra: {action:'show'},next:'askShowUserOpt'}},
-                    {name: 'Add Users From Json', value: { extra: {action:'addFile'},next:'askAddUserFileOpt'}},
-                    {name: 'Add Users', value: { extra: {action:'add'},next:'askAddUserOpt'}},
-                    {name: 'Update Users', value: { extra: { action:'update'},next:'askUpdateUserOpt'}},
-                    {name: 'Remove Users', value: { extra: { action:'remove'},next:'askRemoveUserOpt'}}
+                    {name: 'Show Users', value: {extra: {action: 'show'}, next: 'askShowUserOpt'}},
+                    {name: 'Add Users From Csv', value: {extra: {action: 'addCsvFile'}, next: 'askAddUserFileCsvOpt'}},
+                    {name: 'Add Users From Json', value: {extra: {action: 'addFile'}, next: 'askAddUserFileOpt'}},
+                    {name: 'Add Users', value: {extra: {action: 'add'}, next: 'askAddUserOpt'}},
+                    {name: 'Update Users', value: {extra: {action: 'update'}, next: 'askUpdateUserOpt'}},
+                    {name: 'Remove Users', value: {extra: {action: 'remove'}, next: 'askRemoveUserOpt'}},
+                    {name: 'Delete All Users', value: {extra: {action: 'removeAll'}, next: 'askRemoveUserAllOpt'}}
                 ]
             }
         ];
@@ -103,12 +106,11 @@ module.exports = {
         ];
         return inquirer.prompt(questions);
     },
-
     askClaim: () => {
         const questions = [claim]
-        return inquirer.prompt(questions).then((answer)=>{
-            if(answer.claim === 'askCustomClaim'){
-                 return module.exports.askCustomClaim();
+        return inquirer.prompt(questions).then((answer) => {
+            if (answer.claim === 'askCustomClaim') {
+                return module.exports.askCustomClaim();
             }
             return answer;
         });
@@ -165,12 +167,31 @@ module.exports = {
                 type: 'list',
                 message: 'What do you want to update:',
                 choices: [
-                    {name: 'Claim Roles', value: {extra: { change:'claim' }, next:'askClaim'}},
-                    {name: 'Email', value: {extra: { change:'email' }, next:'askEmail'}},
-                    {name: 'Password', value: {extra: { change:'password' }, next:'askPassword'}},
-                    {name: 'Display Name', value: {extra: { change:'displayName' }, next:'askDisplayName'}},
-                    {name: 'Verify Email', value: {extra: { change:'emailVerified' }, next:'askVerifyEmail'}}
+                    {name: 'Claim Roles', value: {extra: {change: 'claim'}, next: 'askClaim'}},
+                    {name: 'Email', value: {extra: {change: 'email'}, next: 'askEmail'}},
+                    {name: 'Password', value: {extra: {change: 'password'}, next: 'askPassword'}},
+                    {name: 'Display Name', value: {extra: {change: 'displayName'}, next: 'askDisplayName'}},
+                    {name: 'Verify Email', value: {extra: {change: 'emailVerified'}, next: 'askVerifyEmail'}}
                 ]
+            }
+        ];
+        return inquirer.prompt(questions);
+    },
+    askAddUserFileCsvOpt: () => {
+        const questions = [
+            claim,
+            {
+                name: 'file',
+                type: 'input',
+                message: 'Enter filename:',
+                validate: function (value) {
+                    if (value.length) {
+                        return true;
+                    } else {
+                        return 'Please enter a file name';
+                    }
+
+                }
             }
         ];
         return inquirer.prompt(questions);
@@ -197,6 +218,23 @@ module.exports = {
 
     askRemoveUserOpt: () => {
         const questions = [uid];
+        return inquirer.prompt(questions);
+    },
+
+    askRemoveUserAllOpt: () => {
+        const questions = [
+            {
+                name: 'deleteAllVerified',
+                type: 'confirm',
+                message: 'Are you sure?',
+                validate: function (value) {
+                    if (value === 'yes') {
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        ];
         return inquirer.prompt(questions);
     }
 

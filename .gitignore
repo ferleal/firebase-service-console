@@ -2,3 +2,7 @@ node_modules/
 .idea
 serviceAccount.json
 .env
+
+.DS_Store
+
+jsons/

@@ -4,6 +4,7 @@
   "description": "Firebase Service Terminal Console",
   "main": "lib/index.js",
   "scripts": {
+    "cli": "node ./lib/cli.js",
     "build": "npm run clean; babel src --out-dir lib",
     "clean": "rm -rf lib",
     "lint": "eslint --ext lib/**/*.js",
@@ -40,20 +41,21 @@
     "url": "https://github.com/ferleal/firebase-service-console.git"
   },
   "dependencies": {
-    "chalk": "^4.1.0",
+    "chalk": "^4.1.1",
     "clear": "^0.1.0",
-    "dotenv": "^8.2.0",
+    "csv-parse": "^4.15.4",
+    "dotenv": "^9.0.2",
     "figlet": "^1.5.0",
-    "firebase-admin": "^9.2.0",
-    "inquirer": "^7.3.3"
+    "firebase-admin": "^9.7.0",
+    "inquirer": "^8.0.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.11.1",
-    "@babel/preset-env": "^7.11.0",
-    "eslint": "^7.7.0",
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.0",
+    "@babel/preset-env": "^7.14.1",
+    "eslint": "^7.26.0",
     "eslint-config-google": "^0.14.0",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.11"
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0"
   }
 }
